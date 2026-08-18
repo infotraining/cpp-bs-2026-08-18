@@ -11,7 +11,7 @@ if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
   set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
 endif()
 
-project(cpp-20 LANGUAGES CXX)
+project(cpp-bs LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -34,6 +34,7 @@ endif()
 
 enable_testing()
 
+add_subdirectory(hello-world)
 add_subdirectory(basic-types)
 add_subdirectory(containers-and-iterators)
 add_subdirectory(memory-management)
