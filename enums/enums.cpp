@@ -5,12 +5,155 @@
 
 using namespace std::literals;
 
+enum DayOfWeek { Mon = 1,
+    Tue,
+    Wed,
+    Thd,
+    Fri,
+    Sat,
+    Sun };
+
 TEST_CASE("enums")
 {
-	CHECK(true);
+    SECTION("enum declaration and usage")
+    {
+        DayOfWeek day = Mon;
+
+        if (day == Mon)
+        {
+            std::cout << "Jest poniedziałek\n";
+        }
+        else
+        {
+            std::cout << "Inny dzień tygodnia\n";
+        }
+
+        CHECK(day == Mon);
+        CHECK(day == 1);
+        CHECK(Sun == 7);
+
+        switch (day)
+        {
+        case Mon:
+            std::cout << "Poniedziałek\n";
+            break;
+        case Tue:
+            std::cout << "Wtorek\n";
+            break;
+        case Wed:
+            std::cout << "Środa\n";
+            break;
+        case Thd:
+            std::cout << "Czwartek\n";
+            break;
+        case Fri:
+            std::cout << "Piątek\n";
+            break;
+        default:
+            std::cout << "Weekend\n";
+            break;
+        }
+    }
+
+    SECTION("enum to int conversion - implicit cast")
+    {
+        int day_number = Sun;
+        CHECK(day_number == 7);
+    }
+
+    SECTION("int to enum conversion - explict cast")
+    {
+        int day_number = 3;
+        DayOfWeek day = static_cast<DayOfWeek>(day_number);
+        CHECK(day == Wed);
+    }
+
+    SECTION("enum in cout")
+    {
+        DayOfWeek day = Fri;
+        std::cout << "Day of week: " << day << std::endl;
+    }
 }
+
+// Since C++11, we can use scoped enumerations (enum class) to avoid implicit conversions and name clashes.
+
+enum class Direction { Up, Down, Left, Right };
 
 TEST_CASE("scoped enumerations")
 {
-	CHECK(true);
+    SECTION("enum class declaration and usage")
+    {
+        Direction current_direction = Direction::Up;
+
+        if (current_direction == Direction::Up)
+        {
+            std::cout << "Going up!\n";
+        }
+
+        switch (current_direction)
+        {
+        case Direction::Up:
+            std::cout << "Up\n";
+            break;
+        case Direction::Down:
+            std::cout << "Down\n";
+            break;
+        case Direction::Left:
+            std::cout << "Left\n";
+            break;
+        case Direction::Right:
+            std::cout << "Right\n";
+            break;
+        }
+    }
+
+	SECTION("enum class to int conversion - explict cast")
+	{
+		Direction current_direction = Direction::Left;
+		int direction_number = static_cast<int>(current_direction);
+		CHECK(direction_number == 2); // Assuming Up=0, Down=1, Left=2, Right=3
+	}
+
+	SECTION("int to enum class conversion - explict cast")
+	{
+		int direction_number = 3;
+		Direction current_direction = static_cast<Direction>(direction_number);
+		CHECK(current_direction == Direction::Right);
+	}
+
+	SECTION("enum class in cout")
+	{
+		Direction current_direction = Direction::Down;
+		std::cout << "Current direction: " << static_cast<int>(current_direction) << std::endl;
+	}
+}
+
+TEST_CASE("enum class - exercise")
+{
+	int pos_x = 10;
+	int pos_y = 20;
+
+	SECTION("move up")
+	{
+		Direction move_direction = Direction::Up;
+
+		switch (move_direction)
+        {
+        case Direction::Up:
+            pos_y--;
+            break;
+        case Direction::Down:
+            pos_y++;
+            break;
+        case Direction::Left:
+            pos_x--;
+            break;
+        case Direction::Right:
+            pos_x++;
+            break;
+        }
+
+		CHECK(pos_x == 10);
+		CHECK(pos_y == 19);
+	}
 }
