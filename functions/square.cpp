@@ -1,21 +1,24 @@
 #include "square.hpp"
 
-int square(int x) // definition
+int MyMath::square(int x) // definition
 {
     return x * x;
 }
 
-double square(double x)
+namespace MyMath
 {
-    return x * x;
-}
-
-int power(int base, int exponent)
-{
-    int result = 1;
-    for (int i = 0; i < exponent; ++i)
+    double square(double x)
     {
-        result *= base;
+        return x * x;
     }
-    return result;
-}
+
+    int power(int base, int exponent)
+    {
+        int result = 1;
+        for (int i = 0; i < exponent; ++i)
+        {
+            result *= base;
+        }
+        return result;
+    }
+} // namespace MyMath

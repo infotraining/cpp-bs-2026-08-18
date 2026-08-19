@@ -8,10 +8,18 @@
 
 using namespace std::literals;
 
+using namespace MyMath;
+
 TEST_CASE("square")
 {
-    CHECK(square(10) == 100);
+    CHECK(MyMath::square(10) == 100);
     CHECK(square(2.1) == 4.41);
+}
+
+int power(int n)
+{
+    std::cout << "Evil power!!!\n";
+    return 665;
 }
 
 TEST_CASE("power")
@@ -20,7 +28,8 @@ TEST_CASE("power")
     CHECK(power(5, 0) == 1);
     CHECK(power(3, 4) == 81);
 
-    CHECK(power(2) == 2); // default exponent = 1
+    CHECK(MyMath::power(2) == 2); // default exponent = 1
+    CHECK(::power(42) == 665);
 }
 
 void f_arg_by_value(int x)
