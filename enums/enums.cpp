@@ -77,7 +77,10 @@ TEST_CASE("enums")
 
 // Since C++11, we can use scoped enumerations (enum class) to avoid implicit conversions and name clashes.
 
-enum class Direction { Up, Down, Left, Right };
+enum class Direction { Up,
+    Down,
+    Left,
+    Right };
 
 TEST_CASE("scoped enumerations")
 {
@@ -107,53 +110,88 @@ TEST_CASE("scoped enumerations")
         }
     }
 
-	SECTION("enum class to int conversion - explict cast")
-	{
-		Direction current_direction = Direction::Left;
-		int direction_number = static_cast<int>(current_direction);
-		CHECK(direction_number == 2); // Assuming Up=0, Down=1, Left=2, Right=3
-	}
+    SECTION("enum class to int conversion - explict cast")
+    {
+        Direction current_direction = Direction::Left;
+        int direction_number = static_cast<int>(current_direction);
+        CHECK(direction_number == 2); // Assuming Up=0, Down=1, Left=2, Right=3
+    }
 
-	SECTION("int to enum class conversion - explict cast")
-	{
-		int direction_number = 3;
-		Direction current_direction = static_cast<Direction>(direction_number);
-		CHECK(current_direction == Direction::Right);
-	}
+    SECTION("int to enum class conversion - explict cast")
+    {
+        int direction_number = 3;
+        Direction current_direction = static_cast<Direction>(direction_number);
+        CHECK(current_direction == Direction::Right);
+    }
 
-	SECTION("enum class in cout")
-	{
-		Direction current_direction = Direction::Down;
-		std::cout << "Current direction: " << static_cast<int>(current_direction) << std::endl;
-	}
+    SECTION("enum class in cout")
+    {
+        Direction current_direction = Direction::Down;
+        std::cout << "Current direction: " << static_cast<int>(current_direction) << std::endl;
+    }
+}
+
+void move_point(Direction move_direction, int& x, int& y)
+{
+    switch (move_direction)
+    {
+    case Direction::Up:
+        y--;
+        break;
+    case Direction::Down:
+        y++;
+        break;
+    case Direction::Left:
+        x--;
+        break;
+    case Direction::Right:
+        x++;
+        break;
+    }
 }
 
 TEST_CASE("enum class - exercise")
 {
-	int pos_x = 10;
-	int pos_y = 20;
+    int pos_x = 10;
+    int pos_y = 20;
 
-	SECTION("move up")
+    SECTION("move up")
+    {
+        Direction move_direction = Direction::Up;
+
+        move_point(move_direction, pos_x, pos_y);
+
+        CHECK(pos_x == 10);
+        CHECK(pos_y == 19);
+    }
+
+    SECTION("move left")
+    {
+        Direction move_direction = Direction::Left;
+
+		move_point(move_direction, pos_x, pos_y);
+
+        CHECK(pos_x == 9);
+        CHECK(pos_y == 20);
+    }
+
+	SECTION("move down")
 	{
-		Direction move_direction = Direction::Up;
+		Direction move_direction = Direction::Down;
 
-		switch (move_direction)
-        {
-        case Direction::Up:
-            pos_y--;
-            break;
-        case Direction::Down:
-            pos_y++;
-            break;
-        case Direction::Left:
-            pos_x--;
-            break;
-        case Direction::Right:
-            pos_x++;
-            break;
-        }
+		move_point(move_direction, pos_x, pos_y);
 
 		CHECK(pos_x == 10);
-		CHECK(pos_y == 19);
+		CHECK(pos_y == 21);
+	}
+
+	SECTION("move right")
+	{
+		Direction move_direction = Direction::Right;
+
+		move_point(move_direction, pos_x, pos_y);
+
+		CHECK(pos_x == 11);
+		CHECK(pos_y == 20);
 	}
 }

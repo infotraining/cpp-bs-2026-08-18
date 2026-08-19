@@ -380,3 +380,27 @@ TEST_CASE("const")
         }
     }
 }
+
+struct Point
+{
+    int x;
+    int y;
+};
+
+TEST_CASE("structs")
+{
+    Point position{10, 20};
+
+    CHECK(position.x == 10);
+    CHECK(position.y == 20);
+
+    position.x += 5;
+    position.y += 10;
+
+    CHECK(position.x == 15);
+    CHECK(position.y == 30);
+
+    Point another_position = position; // copying the object position to another_position
+    CHECK(another_position.x == 15);
+    CHECK(another_position.y == 30);
+}
