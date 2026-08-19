@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
+#include <map>
 
 using namespace std::literals;
 
@@ -166,6 +168,25 @@ TEST_CASE("basic algorithms")
 		std::cout << "\n";
 
 	}
+
+	SECTION("equals")
+	{
+		std::vector<int> vec = {1, 2, 3};
+		std::list<int> lst = {1, 2, 3};
+
+		CHECK(std::equal(vec.begin(), vec.end(), lst.begin(), lst.end()));
+	}
+}
+
+TEST_CASE("reverse iterators")
+{
+	std::vector<int> vec = {1, 2, 3};
+
+	for(auto it = vec.rbegin(); it != vec.rend(); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << "\n";
 }
 
 TEST_CASE("algorithms with native arrays")
@@ -177,4 +198,83 @@ TEST_CASE("algorithms with native arrays")
 	for(int item : data)
 		std::cout << item << " ";
 	std::cout << "\n";
+}
+
+TEST_CASE("list")
+{
+	std::list<int> lst = {1, 2, 4, 5, 3};
+
+	lst.push_back(6);
+	lst.push_front(0);
+
+	CHECK(lst == std::list<int>{0, 1, 2, 4, 5, 3, 6});
+
+	// lst[1] = 3; // no indexing in list
+
+	// but iterators can do ++ and --
+	auto it = lst.begin();
+	++it;
+
+	CHECK(*it == 1);
+
+	// std::sort(lst.begin(), lst.end()); // ERROR - list is not compatible with std::sort
+
+	lst.sort(); // but lst.sort() is allowed
+	CHECK(lst == std::list<int>{0, 1, 2, 3, 4, 5, 6});
+}
+
+TEST_CASE("std::pair")
+{
+	std::pair<int, std::string> p1{42, "forty-two"};
+
+	CHECK(p1.first == 42);
+	CHECK(p1.second == "forty-two");
+
+	p1 = std::make_pair(8, "eight");
+}
+
+TEST_CASE("std::map")
+{
+	SECTION("basic usage")
+	{
+		std::map<int, std::string> dict = { {1, "one"}, {2, "two"}, {3, "three"} };
+		
+		std::map<int, std::string>::iterator pos = dict.find(2);
+
+		if (pos != dict.end())
+		{
+			std::cout << "Znalazłem szukany element: (" << pos->first << ", " << pos->second << ")\n";
+		}
+
+		std::cout << "3: " << dict[3] << "\n";
+
+		dict[4] = "four";
+		std::cout << "4: " << dict[4] << "\n";
+
+		dict.insert(std::make_pair(5, "five"));
+		dict.emplace(7, "seven");
+	}
+
+	SECTION("handling duplicates")
+	{
+		std::map<int, std::string> dict = { {1, "one"}, {2, "two"}, {3, "three"} };
+
+		// std::pair<std::map<int, std::string>::iterator, bool> result = dict.insert(std::make_pair(2, "dwa"));
+		auto [pos, was_inserted] = dict.insert(std::make_pair(2, "dwa"));
+
+		if (was_inserted)
+		{
+			std::cout << "Wstawiono: {" << pos->first << " : " << pos->second << "}\n";
+		}
+		else
+		{
+			std::cout << "Nie wstawiono nic. Klucz istnieje w mapie. " << pos->first << " : " << pos->second << "\n";
+		}
+
+		CHECK(dict[2] == "two");
+
+		dict.insert_or_assign(2, "dwa");
+
+		CHECK(dict[2] == "dwa");
+	}
 }

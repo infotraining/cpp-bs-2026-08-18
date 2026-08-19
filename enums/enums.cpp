@@ -1,5 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -169,29 +171,43 @@ TEST_CASE("enum class - exercise")
     {
         Direction move_direction = Direction::Left;
 
-		move_point(move_direction, pos_x, pos_y);
+        move_point(move_direction, pos_x, pos_y);
 
         CHECK(pos_x == 9);
         CHECK(pos_y == 20);
     }
 
-	SECTION("move down")
-	{
-		Direction move_direction = Direction::Down;
+    SECTION("move down")
+    {
+        Direction move_direction = Direction::Down;
 
-		move_point(move_direction, pos_x, pos_y);
+        move_point(move_direction, pos_x, pos_y);
 
-		CHECK(pos_x == 10);
-		CHECK(pos_y == 21);
-	}
+        CHECK(pos_x == 10);
+        CHECK(pos_y == 21);
+    }
 
-	SECTION("move right")
-	{
-		Direction move_direction = Direction::Right;
+    SECTION("move right")
+    {
+        Direction move_direction = Direction::Right;
 
-		move_point(move_direction, pos_x, pos_y);
+        move_point(move_direction, pos_x, pos_y);
 
-		CHECK(pos_x == 11);
-		CHECK(pos_y == 20);
-	}
+        CHECK(pos_x == 11);
+        CHECK(pos_y == 20);
+    }
+}
+
+std::string enum_to_string(DayOfWeek dow)
+{
+    static const std::unordered_map<DayOfWeek, std::string> dict = {{Mon, "Monday"}, {Tue, "Tuesday"}, {Wed, "Wednesday"}, {Thd, "Thursday"}, {Fri, "Friday"}, {Sat, "Saturday"}, {Sun, "Sunday"}};
+
+    return dict.at(dow);
+}
+
+TEST_CASE("enum to string mapping")
+{
+    DayOfWeek day = Wed;
+
+    std::cout << "Today is: " << enum_to_string(day) << "\n";
 }
