@@ -1,8 +1,8 @@
+#include <array>
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <array>
 
 using namespace std::literals;
 
@@ -96,7 +96,7 @@ TEST_CASE("arrays")
     {
         const int size = 10;
         int numbers[size] = {7, 543, 65, 32, 56, 77, 2, 5, -77, -1};
-        
+
         numbers[0] = 10;
 
         for (int i = 0; i < size; ++i)
@@ -123,7 +123,7 @@ TEST_CASE("arrays")
     SECTION("std::array")
     {
         std::array<int, 10> numbers = {7, 543, 65, 32, 56, 77, 2, 5, -77, -1};
-        
+
         numbers[0] = 10;
 
         for (int i = 0; i < numbers.size(); ++i)
@@ -192,7 +192,7 @@ TEST_CASE("range-based for loop")
     std::vector<std::string> words = {"Hello", "world", "from", "C++"};
     words.push_back("!!!");
 
-    for(std::string word : words)
+    for (std::string word : words)
     {
         std::cout << word << "\n";
     }
@@ -216,32 +216,167 @@ TEST_CASE("reference types")
 
 TEST_CASE("pointer types")
 {
-    int value = 42;
-    std::cout << "Value: " << value << " is located at " << std::hex << &value << std::endl;
-
-    int* pointer_to_value = &value;
-    std::cout << "Pointer: " << pointer_to_value << " points to value: " << *pointer_to_value << std::endl;
-
-    *pointer_to_value += 10;
-
-    int* another_pointer = NULL; // legacy code
-    int* yet_another_pointer = nullptr; // better way to initialize a pointer to null
-
-    CHECK(another_pointer == nullptr);
-    CHECK(another_pointer == 0);
-
-    std::vector<int> vec = {1, 2, 3, 4, 5};
-    std::vector<int>* pointer_to_vec = &vec;
-    pointer_to_vec->push_back(6); // (*pointer_to_vec).push_back(6);
-
-    CHECK(vec == std::vector<int>{1, 2, 3, 4, 5, 6});
-
-    // using pointers for iteration
-    const int size = 5;
-    int numbers[size] = {1, 2, 3, 4, 5};
-    
-    for(int* ptr_to_item = numbers; ptr_to_item != numbers + size; ++ptr_to_item)
+    SECTION("basic pointer usage")
     {
-        std::cout << *ptr_to_item << "\n";
+        int value = 42;
+        std::cout << "Value: " << value << " is located at " << std::hex << &value << std::endl;
+
+        int* pointer_to_value = &value;
+        std::cout << "Pointer: " << pointer_to_value << " points to value: " << *pointer_to_value << std::endl;
+
+        *pointer_to_value += 10;
+
+        CHECK(value == 52);
+        CHECK(*pointer_to_value == 52);
+    }
+
+    SECTION("pointer initialization")
+    {
+        int* pointer_to_value = nullptr;     // the best way to initialize a pointer to zero
+        int* yet_another_pointer_to_value{}; // value-initialized pointer, also nullptr
+
+        // not-recommended ways to initialize a pointer to zero
+        int* another_pointer = NULL; // legacy code
+        int* one_more_pointer = 0;   // also valid, but not recommended
+
+        CHECK(pointer_to_value == nullptr);
+        CHECK(yet_another_pointer_to_value == nullptr);
+        CHECK(another_pointer == nullptr);
+        CHECK(another_pointer == 0);
+    }
+
+    SECTION("dereferencing a pointer")
+    {
+        int* pointer_to_value = nullptr;
+
+        //*pointer_to_value = 42; // ERROR: dereferencing a nullptr - Undefined Behavior
+
+        if (pointer_to_value) // check if the pointer is not nullptr
+        {
+            *pointer_to_value = 42; // OK: dereferencing a pointer only if it is not nullptr
+        }
+    }
+
+    SECTION("pointer to vector")
+    {
+        std::vector<int> vec = {1, 2, 3, 4, 5};
+        std::vector<int>* pointer_to_vec = &vec;
+        pointer_to_vec->push_back(6); // (*pointer_to_vec).push_back(6);
+
+        CHECK(vec == std::vector<int>{1, 2, 3, 4, 5, 6});
+    }
+
+    SECTION("pointer arithmetic")
+    {
+        const int size = 5;
+        int numbers[size] = {1, 2, 3, 4, 5}, _;
+
+        int* pointer_to_first_item = numbers; // &numbers[0]
+        CHECK(*pointer_to_first_item == 1);
+
+        int* pointer_to_last_item = numbers + (size - 1); // &numbers[size - 1]
+        CHECK(*pointer_to_last_item == 5);
+
+        int* pointer_to_middle = numbers + (size / 2);
+        CHECK(*pointer_to_middle == 3);
+
+        std::cout << "First item: " << *pointer_to_first_item << std::endl;
+        std::cout << "Last item: " << *pointer_to_last_item << std::endl;
+
+        pointer_to_first_item++;
+        pointer_to_last_item--;
+
+        std::cout << "Next item: " << *pointer_to_first_item << std::endl;
+        std::cout << "Previous item: " << *pointer_to_last_item << std::endl;
+    }
+
+    SECTION("iteration using pointers")
+    {
+        const int size = 5;
+        int numbers[size] = {1, 2, 3, 4, 5};
+
+        for (int* it = numbers; it != numbers + size; ++it)
+        {
+            std::cout << *it << "\n";
+        }
+    }
+}
+
+TEST_CASE("finding min using pointers")
+{
+    const int size = 10;
+    int numbers[size] = {1, -6, 99, -42, 5, 2, 3, 4, 5};
+
+    int* pointer_to_min = &numbers[0];
+    for (int* it = numbers; it != numbers + size; ++it)
+    {
+        if (*it < *pointer_to_min)
+        {
+            pointer_to_min = it;
+        }
+    }
+
+    CHECK(*pointer_to_min == -42);
+
+    *pointer_to_min = 665;
+    CHECK(numbers[3] == 665);
+}
+
+TEST_CASE("const")
+{
+    SECTION("mutable variable")
+    {
+        int value = 42;
+        value += 2;
+        CHECK(value == 44);
+    }
+
+    SECTION("immutable variable")
+    {
+        const int value = 665;
+        //++value; // ERROR: value is const
+        CHECK(value == 665);
+    }
+
+    SECTION("const reference")
+    {
+        int value = 42;
+        ++value;
+
+        const int& const_ref_to_value = value;
+        CHECK(const_ref_to_value == 43);
+
+        // const_ref_to_value = 665; // ERROR: ref to const
+    }
+
+    SECTION("const with pointers")
+    {
+        int value = 42;
+        int other_value = 665;
+
+        SECTION("pointer to const")
+        {
+            const int* pointer_to_const = &value;
+            CHECK(*pointer_to_const == 42);
+            // *pointer_to_const = 43; // ERROR: cannot change value under the pointer
+
+            pointer_to_const = &other_value; // redirecting a pointer to a new memory location
+            CHECK(*pointer_to_const == 665);
+        }
+
+        SECTION("const pointer to variable")
+        {
+            int* const const_pointer_to_value = &value;
+            // const_pointer_to_value = &other_value; // ERROR: cannot change address inside const pointer
+            *const_pointer_to_value = 777;
+            CHECK(value == 777);
+        }
+
+        SECTION("const pointer to const")
+        {
+            const int* const const_ptr_to_const = &value;
+            // *const_ptr_to_const = 888;  // ERROR
+            // const_ptr_to_const = &other_value; // ERROR
+        }
     }
 }
