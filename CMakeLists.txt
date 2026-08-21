@@ -46,3 +46,5 @@ add_subdirectory(polymorphism)
 add_subdirectory(_exercises/ex_primes)
 add_subdirectory(_exercises/ex_palindromes)
 add_subdirectory(_exercises/ex_vector2d)
+
+add_subdirectory(sfml-demo)
