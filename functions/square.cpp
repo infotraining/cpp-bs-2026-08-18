@@ -1,12 +1,15 @@
-#include "square.hpp"
+#include <string>
+#include <iostream>
 
-int MyMath::square(int x) // definition
-{
-    return x * x;
-}
+#include "square.hpp"
 
 namespace MyMath
 {
+    int square(int x)
+    {
+        return x * x;
+    }
+
     double square(double x)
     {
         return x * x;
@@ -21,4 +24,16 @@ namespace MyMath
         }
         return result;
     }
+
+    double deg_to_rad(double degrees)
+    {
+        return degrees * (3.14159 / 180.0);
+    }
 } // namespace MyMath
+
+using namespace std; // only in cpp file, not in header file
+
+void MyMath::printf(const std::string& str)
+{
+    std::cout << "printf: " << str << std::endl;
+}

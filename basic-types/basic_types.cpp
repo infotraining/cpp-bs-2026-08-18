@@ -385,6 +385,18 @@ struct Point
 {
     int x;
     int y;
+
+    // method to move the point by dx and dy
+    void move(int dx, int dy)
+    {
+        x += dx;
+        y += dy;
+    }
+
+    void print() const
+    {
+        std::cout << "Point(" << x << ", " << y << ")\n";
+    }
 };
 
 TEST_CASE("structs")
@@ -403,4 +415,43 @@ TEST_CASE("structs")
     Point another_position = position; // copying the object position to another_position
     CHECK(another_position.x == 15);
     CHECK(another_position.y == 30);
+}
+
+TEST_CASE("structs with methods")
+{
+    Point position{10, 20};
+    position.print();
+
+    position.move(5, 10);
+    position.print();
+
+    CHECK(position.x == 15);
+    CHECK(position.y == 30);
+}
+void draw_all_points(const std::vector<Point>& points)
+{
+    for (const Point& p : points)
+    {
+        p.print();
+    }
+}
+
+TEST_CASE("polygon")
+{
+    std::vector<Point> polygon = { Point{0, 0}, Point{10, 0}, Point{10, 10}, Point{0, 10} };
+
+    for (int i = 0; i < polygon.size(); i++)
+    {
+        polygon[i].print();
+    }
+
+    std::cout << "Moving the polygon by (5, 5)\n";
+
+    // range-based for - modifying the points in the polygon
+    for(Point& p : polygon)
+    {
+        p.move(5, 5);
+    }
+
+    draw_all_points(polygon);
 }

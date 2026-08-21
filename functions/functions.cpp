@@ -1,4 +1,5 @@
 #include "square.hpp"
+#include "lib.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
@@ -7,6 +8,7 @@
 #include <optional>
 
 using namespace std::literals;
+using namespace std;
 
 using namespace MyMath;
 
@@ -132,4 +134,9 @@ TEST_CASE("optional")
     
     if (opt_int)
         CHECK(*opt_int == 42);
+}
+
+TEST_CASE("printf function")
+{
+   Lib::printf("Hello, World!");
 }
