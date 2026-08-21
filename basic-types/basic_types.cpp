@@ -386,6 +386,11 @@ struct Point
     int x;
     int y;
 
+    // constructor
+    Point(int x, int y) : x(x), y(y)
+    {
+    }
+
     // method to move the point by dx and dy
     void move(int dx, int dy)
     {
@@ -397,11 +402,27 @@ struct Point
     {
         std::cout << "Point(" << x << ", " << y << ")\n";
     }
+
+    // binary operator== inside class: *this == other
+    bool operator==(const Point& other) const
+    {
+        return this->x == other.x && this->y == other.y;
+    }
 };
+
+// // binary operator== outside class: a == b 
+// bool operator==(const Point& a, const Point& b)
+// {
+//     return (a.x == b.x) && (a.y == b.y);
+// }
+
+// operator:
+// a + b - two operands - binary operator
+// -a - one operand - unary operator
 
 TEST_CASE("structs")
 {
-    Point position{10, 20};
+    Point position(10, 20);
 
     CHECK(position.x == 10);
     CHECK(position.y == 20);
@@ -411,6 +432,8 @@ TEST_CASE("structs")
 
     CHECK(position.x == 15);
     CHECK(position.y == 30);
+
+    CHECK(position == Point(15, 30));
 
     Point another_position = position; // copying the object position to another_position
     CHECK(another_position.x == 15);
@@ -428,6 +451,7 @@ TEST_CASE("structs with methods")
     CHECK(position.x == 15);
     CHECK(position.y == 30);
 }
+
 void draw_all_points(const std::vector<Point>& points)
 {
     for (const Point& p : points)
@@ -454,4 +478,61 @@ TEST_CASE("polygon")
     }
 
     draw_all_points(polygon);
+}
+
+
+struct Vector2D
+{
+    int x, y;
+
+    bool operator==(const Vector2D& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    Vector2D operator+(Vector2D vec) const
+    {
+        Vector2D result{x + vec.x, y + vec.y};
+        return result;
+    }
+
+    Vector2D operator-(Vector2D vec) const
+    {
+        Vector2D result{x - vec.x, y - vec.y};
+        return result;
+    }
+
+    Vector2D operator-() const
+    {
+        return Vector2D{-x, -y};
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, Vector2D v)
+    {
+        out << "Vector2D(" << v.x << ", " << v.y << ")";
+        return out;
+    }
+};
+
+TEST_CASE("overloading operators")
+{
+    Vector2D v1{1, 2};
+    Vector2D v2{1, 2};
+
+    std::cout << v1 << "\n";
+    std::cout << v2 << "\n";
+
+    CHECK(v1.x == 1);
+    CHECK(v1.y == 2);
+
+    CHECK(v1 == v2);
+
+    Vector2D v3 = v1 + v2;
+    CHECK(v3 == Vector2D{2, 4});
+
+    Vector2D v4 = v3 - v2;
+    CHECK(v4 == Vector2D{1, 2});
+
+    Vector2D v5 = -v1;
+    CHECK(v5 == Vector2D{-1, -2});
 }
