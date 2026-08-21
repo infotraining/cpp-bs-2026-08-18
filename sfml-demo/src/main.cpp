@@ -40,6 +40,7 @@ public:
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML works!");
+	sf::Clock clock;
 
     Circle c1(Point{200, 100}, 50);
 
@@ -50,10 +51,16 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
+        
+		window.clear();
 
-        window.clear();
-		c1.move(1, 1);
-        c1.draw(window);
-        window.display();
+		auto elapsed = clock.getElapsedTime();
+		if (elapsed.asMilliseconds() >= 25)
+		{
+			c1.move(2, 2);
+    	    c1.draw(window);
+        	window.display();
+			clock.restart();
+		}
     }
 }

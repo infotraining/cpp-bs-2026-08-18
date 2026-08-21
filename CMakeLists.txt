@@ -48,3 +48,4 @@ add_subdirectory(_exercises/ex_palindromes)
 add_subdirectory(_exercises/ex_vector2d)
 
 add_subdirectory(sfml-demo)
+add_subdirectory(snake)
