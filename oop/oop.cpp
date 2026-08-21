@@ -15,8 +15,7 @@ TEST_CASE("BankAccount - constructor")
     {
         BankAccount account(12345);
 
-        account.id = 12345;
-        CHECK(account.id == 12345);
+        CHECK(account.get_id() == 12345);
 
         account.print();
     }
@@ -25,8 +24,8 @@ TEST_CASE("BankAccount - constructor")
 	{
 		BankAccount account(12345, 1'000);
 
-		CHECK(account.id == 12345);
-		CHECK(account.balance == 1'000);
+		CHECK(account.get_id() == 12345);
+		CHECK(account.get_balance() == 1'000);
 
 		account.print();
 	}
@@ -36,10 +35,42 @@ TEST_CASE("BankAccount - balance")
 {
     Banking::BankAccount account(12345);
 
-    CHECK(account.balance == 0.0);
-
-    account.balance = 100.50;
-    CHECK(account.balance == 100.50);
+    CHECK(account.get_balance() == 0.0);
 
     account.print();
+}
+
+TEST_CASE("BankAccount - deposit")
+{
+	BankAccount account(12345, 100);
+	
+	//account.balance += 100;
+	account.deposit(100.0);
+
+	CHECK(account.get_balance() == 200);
+
+	account.print();
+}
+
+TEST_CASE("BankAccount - withdraw")
+{
+	BankAccount account(12345, 100);
+
+	account.withdraw(50.5);
+
+	CHECK(account.get_balance() == 49.5);
+
+	account.print();
+}
+
+TEST_CASE("BankAccount - encapsulation")
+{
+	BankAccount account(12345, 100);
+
+	account.deposit(100.0);
+	account.deposit(40.0);
+	account.deposit(1.0);
+	account.withdraw(45.0);
+
+	CHECK(account.get_balance() == 196.0);
 }
