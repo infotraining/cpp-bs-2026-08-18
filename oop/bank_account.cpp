@@ -2,31 +2,32 @@
 
 namespace Banking
 {
+    double BankAccount::interest_rate_ = 0.1;
+
     BankAccount::BankAccount(uint32_t id)
+        : id_(id) // lista inicjalizacji
     {
-        this->id = id;
     }
 
-    BankAccount::BankAccount(uint32_t account_id, double account_balance)
+    BankAccount::BankAccount(uint32_t id, double balance)
+        : id_(id), balance_(balance)
     {
-        id = account_id;
-        balance = account_balance;
     }
 
     void BankAccount::deposit(double amount)
     {
         assert(amount > 0);
-        balance += amount;
+        balance_ += amount;
     }
 
     void BankAccount::withdraw(double amount)
     {
         assert(amount > 0);
-        balance -= amount;
+        balance_ -= amount;
     }
 
     void BankAccount::print() const
     {
-        std::cout << "BankAccount(id: " << id << "; balance: " << balance << ")\n";
+        std::cout << "BankAccount(id: " << id_ << "; balance: " << balance_ << ")\n";
     }
 } // namespace Banking

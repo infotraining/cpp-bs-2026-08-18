@@ -74,3 +74,15 @@ TEST_CASE("BankAccount - encapsulation")
 
 	CHECK(account.get_balance() == 196.0);
 }
+
+TEST_CASE("BankAccount - daily interest rate")
+{
+	BankAccount::set_interest_rate(0.1); // call static function
+
+	CHECK(BankAccount::get_interest_rate() == 0.1);
+
+	BankAccount account(12345, 100.0);
+	account.pay_interest(365);
+
+	CHECK(account.get_balance() == 110.0);
+}
