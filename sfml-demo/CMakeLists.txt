@@ -17,4 +17,4 @@ add_executable(sfml-demo src/main.cpp)
 target_compile_features(sfml-demo PRIVATE cxx_std_23)
 target_link_libraries(sfml-demo PRIVATE SFML::Graphics)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT sfml-demo    )
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT sfml-demo)
