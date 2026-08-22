@@ -25,6 +25,7 @@ class Board
 
 public:
     Board(int width, int height, int apple_count);
+    void add_new_apple();
     bool try_eat_apple(Apple apple_to_eat);
     void render_snake(sf::RenderWindow& wnd, const Snake& snake);
     void render_apples(sf::RenderWindow& wnd);

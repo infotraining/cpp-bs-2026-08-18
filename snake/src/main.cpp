@@ -1,7 +1,7 @@
-#include <SFML/Graphics.hpp>
-
-#include "snake.hpp"
 #include "board.hpp"
+#include "snake.hpp"
+
+#include <SFML/Graphics.hpp>
 
 int main()
 {
@@ -11,6 +11,7 @@ int main()
     Snake snake(40, 30);
 
     sf::Clock clock;
+    sf::Clock apple_clock;
     Direction current_direction = Direction::Right;
 
     while (window.isOpen())
@@ -42,6 +43,13 @@ int main()
         window.clear();
 
         auto elapsed = clock.getElapsedTime();
+
+        if (apple_clock.getElapsedTime().asMilliseconds() >= 2000)
+        {
+            board.add_new_apple();
+            apple_clock.restart();
+        }
+
         if (elapsed.asMilliseconds() >= 100)
         {
             // drawing snake
