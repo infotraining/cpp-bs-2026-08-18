@@ -116,7 +116,7 @@ public:
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode({1600, 1000}), "SFML works!");
 
     Board board(80, 60, 10);
     Snake snake(40, 30);
