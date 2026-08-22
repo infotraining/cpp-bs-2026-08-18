@@ -139,8 +139,8 @@ private:
     {
         window_.clear();
 
-        board_.render_apples(window_);
-        board_.render_snake(window_, snake_);
+        render_apples();
+        render_snake();
     }
 
     void render_game_over()
@@ -160,72 +160,43 @@ private:
 
         window_.draw(text);
     }
+
+    void render_snake()
+{
+    const int wnd_width = window_.getSize().x;
+    const int wnd_height = window_.getSize().y;
+
+    const float segment_width = wnd_width / board_.width();
+
+    for (const auto& segment : snake_.segments())
+    {
+        sf::RectangleShape rect(sf::Vector2f{segment_width, segment_width});
+        rect.setFillColor(sf::Color::Green);
+        rect.setPosition({segment_width * segment.x, segment_width * segment.y});
+        window_.draw(rect);
+    }
+}
+
+void render_apples()
+{
+    const int wnd_width = window_.getSize().x;
+    const int wnd_height = window_.getSize().y;
+
+    const float apple_width = wnd_width / board_.width();
+
+    for (const Apple& apple : board_.apples())
+    {
+        sf::RectangleShape rect(sf::Vector2f{apple_width, apple_width});
+        rect.setFillColor(sf::Color::Red);
+        rect.setPosition({apple_width * apple.x, apple_width * apple.y});
+        window_.draw(rect);
+    }
+}
+
 };
 
 int main()
 {
     SnakeGame game;
     game.run();
-
-    // sf::RenderWindow window(sf::VideoMode({1600, 1000}), "SFML works!");
-
-    // Board board(80, 60, 10);
-    // Snake snake(40, 30);
-
-    // sf::Clock clock;
-    // sf::Clock apple_clock;
-    // Direction current_direction = Direction::Right;
-
-    // while (window.isOpen())
-    // {
-    //     while (const std::optional event = window.pollEvent())
-    //     {
-    //         if (event->is<sf::Event::Closed>())
-    //             window.close();
-    //         else if (const sf::Event::KeyPressed* key_pressed = event->getIf<sf::Event::KeyPressed>())
-    //         {
-    //             switch (key_pressed->scancode)
-    //             {
-    //             case sf::Keyboard::Scan::Up:
-    //                 current_direction = Direction::Up;
-    //                 break;
-    //             case sf::Keyboard::Scan::Down:
-    //                 current_direction = Direction::Down;
-    //                 break;
-    //             case sf::Keyboard::Scan::Left:
-    //                 current_direction = Direction::Left;
-    //                 break;
-    //             case sf::Keyboard::Scan::Right:
-    //                 current_direction = Direction::Right;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     window.clear();
-
-    //     auto elapsed = clock.getElapsedTime();
-
-    //     if (apple_clock.getElapsedTime().asMilliseconds() >= 2000)
-    //     {
-    //         board.add_new_apple();
-    //         apple_clock.restart();
-    //     }
-
-    //     if (elapsed.asMilliseconds() >= 100)
-    //     {
-    //         // drawing snake
-    //         if (snake.move(current_direction, board) == false)
-    //         {
-    //             std::cout << "Snake dies!!!" << std::endl;
-    //             window.close();
-    //         }
-
-    //         board.render_apples(window);
-    //         board.render_snake(window, snake);
-
-    //         window.display();
-    //         clock.restart();
-    //     }
-    // }
 }

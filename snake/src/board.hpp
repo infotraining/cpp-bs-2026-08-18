@@ -28,10 +28,9 @@ public:
 
     int width() const { return width_; }
     int height() const { return height_; }
+    const std::vector<Apple>& apples() const { return apples_; }
 
     void add_new_apple();
     bool try_eat_apple(Apple apple_to_eat);
     bool is_hitting_wall(Segment new_head);
-    void render_snake(sf::RenderWindow& wnd, const Snake& snake);
-    void render_apples(sf::RenderWindow& wnd);
 };
