@@ -23,7 +23,7 @@ class SnakeGame
 
 public:
     SnakeGame()
-        : window_(sf::VideoMode({1600, 1000}), "Snake!!!")
+        : window_(sf::VideoMode({1500, 1000}), "Snake!!!")
         , board_(80, 60, 10)
         , snake_(40, 30)
         , current_direction_(Direction::Right)
@@ -162,37 +162,37 @@ private:
     }
 
     void render_snake()
-{
-    const int wnd_width = window_.getSize().x;
-    const int wnd_height = window_.getSize().y;
-
-    const float segment_width = wnd_width / board_.width();
-
-    for (const auto& segment : snake_.segments())
     {
-        sf::RectangleShape rect(sf::Vector2f{segment_width, segment_width});
-        rect.setFillColor(sf::Color::Green);
-        rect.setPosition({segment_width * segment.x, segment_width * segment.y});
-        window_.draw(rect);
+        const float cell_width = static_cast<float>(window_.getSize().x) / board_.width();
+
+        for (const auto& segment : snake_.segments())
+        {
+            sf::RectangleShape rectangle(sf::Vector2f(static_cast<float>(cell_width), static_cast<float>(cell_width)));
+            rectangle.setPosition({segment.x * cell_width, segment.y * cell_width});
+            rectangle.setFillColor(sf::Color::Green);
+            window_.draw(rectangle);
+        }
     }
-}
 
-void render_apples()
-{
-    const int wnd_width = window_.getSize().x;
-    const int wnd_height = window_.getSize().y;
-
-    const float apple_width = wnd_width / board_.width();
-
-    for (const Apple& apple : board_.apples())
+    void render_apples()
     {
-        sf::RectangleShape rect(sf::Vector2f{apple_width, apple_width});
-        rect.setFillColor(sf::Color::Red);
-        rect.setPosition({apple_width * apple.x, apple_width * apple.y});
-        window_.draw(rect);
-    }
-}
+        const float cell_width = static_cast<float>(window_.getSize().x) / board_.width();
+        const float cell_height = static_cast<float>(window_.getSize().y) / board_.height();
 
+        static const sf::Texture apple_texture("apple.png");
+        sf::Sprite apple_sprite(apple_texture);
+
+        // uniform scale so the apple's height matches the snake's cell height, enlarged by 50%
+        const float scale = 2.0f * cell_height / apple_texture.getSize().y;
+        apple_sprite.setScale({scale, scale});
+        apple_sprite.setOrigin({apple_texture.getSize().x / 2.f, apple_texture.getSize().y / 2.f});
+
+        for (const auto& apple : board_.apples())
+        {
+            apple_sprite.setPosition({apple.x * cell_width + cell_width / 2.f, apple.y * cell_height + cell_height / 2.f});
+            window_.draw(apple_sprite);
+        }
+    }
 };
 
 int main()

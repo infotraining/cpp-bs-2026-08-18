@@ -18,3 +18,6 @@ target_compile_features(snake PRIVATE cxx_std_23)
 target_link_libraries(snake PRIVATE SFML::Graphics)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT snake)
+
+file(COPY ${CMAKE_SOURCE_DIR}/snake/apple.png
+     DESTINATION ${CMAKE_BINARY_DIR}/bin)
