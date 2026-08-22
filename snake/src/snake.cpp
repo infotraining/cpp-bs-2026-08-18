@@ -30,6 +30,7 @@ bool Snake::move(Direction direction, Board& board)
         break;
     }
 
+    // snake dies hits the wall or eats itself
     if (board.is_hitting_wall(new_head) || is_eating_self(new_head))
     {
         return false;
