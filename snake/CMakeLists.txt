@@ -13,7 +13,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(snake src/main.cpp)
+add_executable(snake src/main.cpp src/snake.cpp src/board.cpp)
 target_compile_features(snake PRIVATE cxx_std_23)
 target_link_libraries(snake PRIVATE SFML::Graphics)
 
