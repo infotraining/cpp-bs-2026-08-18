@@ -1,5 +1,6 @@
 #include "board.hpp"
 #include "snake.hpp"
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 
@@ -53,7 +54,12 @@ int main()
         if (elapsed.asMilliseconds() >= 100)
         {
             // drawing snake
-            snake.move(current_direction, board);
+            if (snake.move(current_direction, board) == false)
+            {
+                std::cout << "Snake dies!!!" << std::endl;
+                window.close();
+            }
+
             board.render_apples(window);
             board.render_snake(window, snake);
 

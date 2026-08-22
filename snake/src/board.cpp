@@ -64,3 +64,8 @@ void Board::add_new_apple()
     
     apples_.push_back(Apple(new_x, new_y));
 }
+
+bool Board::is_hitting_wall(Segment new_head)
+{
+    return new_head.x < 0 || new_head.x >= width_ || new_head.y < 0 || new_head.y >= height_;
+}

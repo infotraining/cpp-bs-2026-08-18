@@ -54,9 +54,10 @@ class Board;
 class Snake
 {
     std::vector<Segment> segments_;
+    bool is_eating_self(Segment new_head);
 
 public:
     Snake(int start_x, int start_y);
-    void move(Direction direction, Board& board);
+    bool move(Direction direction, Board& board);
     const std::vector<Segment>& segments() const;
 };
